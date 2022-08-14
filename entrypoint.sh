@@ -1,8 +1,12 @@
 #!/bin/bash
 
+
+##Make WG admin user
+
+
 #Enable IPv4 forwarding
-sed '/net.ipv4.ip_forward=1/s/^#//' -i /etc/sysctl.conf
-sysctl -p
+sudo sed '/net.ipv4.ip_forward=1/s/^#//' -i /etc/sysctl.conf
+sudo sysctl -p
 
 #Create variable for host's public IP
 first_ip_address="$(curl -Ls ifconfig.me)"
@@ -37,7 +41,7 @@ sudo echo "$load_config" >> /etc/wireguard/wg0.conf
 sleep 2
 
 #Sed script to replace string w/ variable
-sed -i "s/a_private_key/$private_key/g" /etc/wireguard/wg0.conf
+sudo sed -i "s/a_private_key/$private_key/g" /etc/wireguard/wg0.conf
 
 
 #Read user input as variable
@@ -47,10 +51,10 @@ sed -i "s/a_private_key/$private_key/g" /etc/wireguard/wg0.conf
 #echo "PublicKey = $client_pub_key"  >> wg0.conf
 
 #Quick enable wg0 interface
-wg-quick up wg0
+sudo wg-quick up wg0
 
 
 #Adjust firewall to allow SSH and wireguardVPN traffic
-ufw allow 22/tcp
-ufw allow 51820/udp
-ufw enable
+sudo ufw allow 22/tcp
+sudo ufw allow 51820/udp
+sudo ufw enable
