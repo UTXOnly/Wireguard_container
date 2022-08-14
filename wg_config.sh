@@ -2,7 +2,7 @@
 
 
 
-
+sudo su
 
 #Enable IPv4 forwarding
 sudo sed '/net.ipv4.ip_forward=1/s/^#//' -i /etc/sysctl.conf
@@ -24,7 +24,7 @@ private_key=$(< privatekey)
 
 load_config="
 [Interface]
-PrivateKey = a_private_key
+PrivateKey =a_private_key
 Address = 10.0.0.0/24
 ListenPort = 51820
 PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -36,27 +36,9 @@ PersistentKeepalive = 25
 
 
 #Populate begining of config file
-sudo echo "$load_config" >> /etc/wireguard/wg0.conf
+sudo echo "$load_config" | tee -a /etc/wireguard/wg0.conf
 
 sleep 2
 
 #Sed script to replace string w/ variable
-sudo sed -i "s/a_private_key/$private_key/g" /etc/wireguard/wg0.conf
-
-
-#Read user input as variable
-#read -p "What is the public key of the client?" client_pub_key
-
-#Pipe contents of variable to append wg0.conf
-#echo "PublicKey = $client_pub_key"  >> wg0.conf
-
-#Quick enable wg0 interface
-sudo wg-quick up wg0
-
-
-#Adjust firewall to allow SSH and wireguardVPN traffic
-sudo ufw allow 22/tcp
-sudo ufw allow 51820/udp
-sudo ufw enable
-
-su - wireguard
+sed -i "s/a_private_key/$private_key/g" /etc/wireguard/wg0.conf

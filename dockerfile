@@ -5,7 +5,9 @@ RUN apt-get update && \
     sudo \
     ufw \
     systemctl \
-    iptables 
+    iptables  \
+    curl  \
+    net-tools 
 
 ARG UID=1000
 ARG GID=1000
@@ -14,13 +16,24 @@ ARG GROUPNAME=wireguard
 RUN groupadd -g $GID -o $USERNAME && \
   useradd -m -u $UID -g $GID -o -d /home/$USERNAME -s /bin/bash $USERNAME && \
   passwd -d $USERNAME && \
+  echo "$USERNAME    ALL=(ALL:ALL) NOPASSWD: /usr/bin/" | tee -a /etc/sudoers && \
   usermod -aG sudo $USERNAME
+COPY ./wg_config.sh /usr/local/wg_config.sh
+RUN chmod a+rx /usr/local/wg_config.sh
+CMD ["bash", "/usr/local/wg_config.sh"]
+
 
 COPY ./entrypoint.sh /usr/local/entrypoint.sh
 RUN chmod a+rx /usr/local/entrypoint.sh \
-    && sudo chown $USERNAME:$GROUPNAME /etc/wireguard
+    && sudo chown $USERNAME:$GROUPNAME /etc/wireguard  && \
+    touch /etc/wireguard/wg0.conf && \
+    chown $USERNAME:$GROUPNAME /etc/wireguard/wg0.conf
 
-USER root
+
+#RUN bash /usr/local/entrypoint.sh
+
 EXPOSE 51820/udp \
     22/tcp
+
+USER $USERNAME
 ENTRYPOINT ["/usr/local/entrypoint.sh"]
