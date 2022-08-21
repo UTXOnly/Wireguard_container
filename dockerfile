@@ -27,7 +27,7 @@ RUN groupadd -g $GID  $USERNAME && \
   usermod -aG sudo $USERNAME
 COPY ./wg_config.sh /usr/local/wg_config.sh
 RUN chmod 777 /usr/local/wg_config.sh
-CMD ["bash", "/usr/local/wg_config.sh"]
+
 
 
 COPY ./entrypoint.sh /usr/local/entrypoint.sh
@@ -37,7 +37,7 @@ RUN chmod 777 /usr/local/entrypoint.sh \
     chown $USERNAME:$GROUPNAME /etc/wireguard/wg0.conf
 
 
-#RUN bash /usr/local/entrypoint.sh
+
 
 EXPOSE 51820/udp \
     22/tcp
