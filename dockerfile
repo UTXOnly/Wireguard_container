@@ -9,7 +9,7 @@ RUN apt-get update && \
     curl  \
     net-tools 
 
-<<<<<<< HEAD
+
 #ARG UID=1000
 #ARG GID=1000
 #ARG USERNAME=wireguard
@@ -19,8 +19,8 @@ ARG UID=1001
 ARG GID=1001
 ARG USERNAME=wireguard
 ARG GROUPNAME=wireguard
->>>>>>> 6aa3fd56fb722c219f09d2fe5b67c3f2ef6192a1
-RUN groupadd -g $GID -o $USERNAME && \
+
+RUN groupadd -g $GID  $USERNAME && \
   useradd -m -u $UID -g $GID -d /home/$USERNAME -s /bin/bash $USERNAME && \
   passwd -d $USERNAME && \
   echo "$USERNAME    ALL=(ALL:ALL) NOPASSWD: /usr/bin/" | tee -a /etc/sudoers && \
