@@ -14,7 +14,7 @@ ARG GID=1001
 ARG USERNAME=wireguard
 ARG GROUPNAME=wireguard
 RUN groupadd -g $GID -o $USERNAME && \
-  useradd -m -u $UID -g $GID -o -d /home/$USERNAME -s /bin/bash $USERNAME && \
+  useradd -m -u $UID -g $GID -d /home/$USERNAME -s /bin/bash $USERNAME && \
   passwd -d $USERNAME && \
   echo "$USERNAME    ALL=(ALL:ALL) NOPASSWD: /usr/bin/" | tee -a /etc/sudoers && \
   usermod -aG sudo $USERNAME
