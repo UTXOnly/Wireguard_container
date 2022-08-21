@@ -9,8 +9,8 @@ RUN apt-get update && \
     curl  \
     net-tools 
 
-ARG UID=1000
-ARG GID=1000
+ARG UID=1001
+ARG GID=1001
 ARG USERNAME=wireguard
 ARG GROUPNAME=wireguard
 RUN groupadd -g $GID -o $USERNAME && \
