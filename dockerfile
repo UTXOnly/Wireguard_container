@@ -14,7 +14,7 @@ RUN apt-get update && \
 #ARG GID=1000
 #ARG USERNAME=wireguard
 #ARG GROUPNAME=wireguard
-=======
+
 ARG UID=1001
 ARG GID=1001
 ARG USERNAME=wireguard
