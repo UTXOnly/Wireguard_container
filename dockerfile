@@ -36,7 +36,10 @@ RUN chmod 777 /usr/local/entrypoint.sh \
     touch /etc/wireguard/wg0.conf && \
     chown $USERNAME:$GROUPNAME /etc/wireguard/wg0.conf
 
-
+RUN sed '/net.ipv4.ip_forward=1/s/^#//' -i /etc/sysctl.conf \
+    sysctl -p
+WORKINGDIR umask 077; wg genkey | tee privatekey | wg pubkey > publickey
+   
 
 
 EXPOSE 51820/udp \
