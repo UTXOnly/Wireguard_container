@@ -1,0 +1,14 @@
+---
+version: "2.1"
+services:
+  wireguard:
+    image: wg:v1
+    container_name: wireguard
+    volumes:
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+      - 22:22/tcp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
